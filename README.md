@@ -54,8 +54,8 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
  * Configure the client
   
- - Specify the key server IP and port in file /client/keyClient/exchange.cc line 200
- - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
+  - Specify the key server IP and port in file /client/keyClient/exchange.cc line 200
+  - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
 
 	Example: you have run 4 servers with "./SERVER [port]" on machines:
 		- 192.168.0.30 with port 11030
@@ -72,9 +72,9 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
 		(the actual order doesn't matter)
 
- -(Optional) In the configure class of client, /client/util/conf.hh
-  - set chunk and secure parameters following the comments
-  - set the number of storage nodes according to your running servers
+  -(Optional) In the configure class of client, /client/util/conf.hh
+    - set chunk and secure parameters following the comments
+    - set the number of storage nodes according to your running servers
 
 # MAKE
 
