@@ -30,7 +30,18 @@
 #define CHUNK_RB_SIZE 1024
 
 #define HASH_TABLE_SIZE (32*1024*1024)
-#define SEND_THREADS 2
+#define SEND_THREADS 1
+
+#define KEY_BATCH_SIZE_MAX (4096*1024*2)
+#define KEY_BATCH_SIZE_MIN (2048*1024)
+#define BATCH_COUNT 4100
+
+#define VAR_SEG 77
+#define FIX_SEG 88
+#define CHARA_MIN_HASH 1007
+#define CHARA_FIRST_HASH 1008
+#define CHARA_FIRST_64 1009
+
 
 using namespace std;
 
@@ -65,15 +76,15 @@ private:
 
 	// array for SSL structures
 	Ssl* sock_[SEND_THREADS];
-	
+
+	int current_;
+
+	int segType_;
+
+	int charaType_;
+
 
 public:
-
-	// hash table entry pair
-	typedef struct{
-		unsigned char hash[HASH_SIZE];
-		unsigned char key[HASH_SIZE];
-	}entry_t;
 
 	// thread handler structure
 	typedef struct{
@@ -96,9 +107,6 @@ public:
 	// input ring buffer
 	RingBuffer<Chunk_t>* inputbuffer_;
 	
-	// hash table for cache keys
-	HashTable<entry_t>* hashtable_;
-
 	// thread id
 	pthread_t tid_;
 
@@ -113,7 +121,7 @@ public:
      *
      *
      */
-    KeyEx(Encoder* obj, int securetype);
+    KeyEx(Encoder* obj, int securetype, int port, int seg, int chara);
 
     /*
      * destructor of key exchange
@@ -186,40 +194,11 @@ public:
 	void keyExchange(unsigned char* hash_buf, int size, int num, unsigned char* key_buf, CryptoPrimitive* obj);
 
 	/*
-	 * hash table initiation
-	 *
-	 */ 
-	void create_table();
-
-	/*
 	 * thread handler
 	 *
 	 */ 
 	static void* thread_handler(void* param);
 
-	/*
-	 * hash table hash function
-	 *
-	 */
-	static unsigned int key_hash_fcn(const entry_t*);
-
-	/*
-	 * hash table compare function
-	 *
-	 */ 
-	static bool key_cmp_fcn(const entry_t*, const entry_t*);
-
-	/*
-	 * hash table item init function
-	 *
-	 */ 
-	static void key_init_fcn(entry_t*, void*);
-
-	/*
-	 * hash table item free function
-	 *
-	 */ 
-	static void key_free_fcn(entry_t*, void*);
 
 	/*
 	 * insert new key to key store

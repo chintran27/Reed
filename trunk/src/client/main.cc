@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
     }
     namesize++;
 
-    /* parse secure parameters */
+    /*  parse secure parameters */
     int securetype = LOW_SEC_PAIR_TYPE;
     if(strncmp(securesetting,"HIGH", 4) == 0) securetype = HIGH_SEC_PAIR_TYPE;
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
 		/* object initialization */
         uploaderObj = new Uploader(n,n,userID);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
-		keyObj = new KeyEx(encoderObj, securetype);
+		keyObj = new KeyEx(encoderObj, securetype, 1101, VAR_SEG, CHARA_MIN_HASH);
 		keyObj->readKeyFile("./keys/public.pem");
 
 		keyObj->new_file(userID, argv[1], namesize);
@@ -186,7 +186,6 @@ int main(int argc, char *argv[]){
 				/* add chunk to key client */
 				keyObj->add(&input);
 
-				
 				/* increase counter */
                 totalChunks++;
                 preEnd = chunkEndIndexList[count];
@@ -253,7 +252,7 @@ int main(int argc, char *argv[]){
         timerStart(&timer);
         uploaderObj = new Uploader(n,n,userID);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
-		keyObj = new KeyEx(encoderObj, securetype);
+		keyObj = new KeyEx(encoderObj, securetype, 1101, VAR_SEG, CHARA_MIN_HASH);
 		keyObj->readKeyFile("./keys/public.pem");
 
 		keyObj->update_file(userID, argv[1], namesize);
