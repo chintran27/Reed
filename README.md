@@ -88,7 +88,7 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
   - Go to /server/lib/leveldb/, type "make" to make levelDB
   - Back to /server/, type "make" to get the executable SERVER program
 
- * To make a keyserver, on the key server machine:
+ * To make a keymanager, on the key server machine:
   - Go to /keyServer/, type "make" to get the executable KEYSERVER program
 
 # EXAMPLE
