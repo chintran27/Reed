@@ -16,7 +16,7 @@ REED builds on a deterministic version of all-or-nothing transform (AONT), such 
 
 # REQUIREMENTS
 
-CDStore is built on Ubuntu 12.04.3 LTS with gcc version 4.6.3.
+REED is built on Ubuntu 12.04.3 LTS with gcc version 4.6.3.
 
 This software requires the following libraries:
 
