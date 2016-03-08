@@ -40,41 +40,42 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 # CONFIGURATION
 
 
- * Configure the storage server (REED requires at least 4 storage server)
+ * Configure the storage server (can be specified as keystore or datastore or both in conf.hh)
 
-	- Make sure there are three directories under /server/meta
+	- Make sure there are three directories under /server/
 	- "DedupDB" for levelDB logs
 	- "RecipeFiles" for temp recipe files
 	- "ShareContainers" for share local cache
 	- Start a server by "./SERVER [port]"
 
- * Configure the key server
 
-  - Start a key server by "./KEYSERVER [port]"
+ * Configure the key manager
+
+  - Start a key manager by "./KEYSERVER [port]"
 
  * Configure the client
   
-  - Specify the key server IP and port in file /client/keyClient/exchange.cc line 200
+  - Specify the key manager and key store IPs, ports in /client/util/conf.hh
+
+  - Specify the number of storage nodes in /client/util/conf.hh, modifying the "n" value
+
   - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
 
-	Example: you have run 4 servers with "./SERVER [port]" on machines:
+	Example: you have run 2 servers with "./SERVER [port]" on machines:
 		- 192.168.0.30 with port 11030
 		- 192.168.0.31 with port 11031
-		- 192.168.0.32 with port 11032
-		- 192.168.0.33 with port 11033
+    
+    If you want 2 of them act as datastore, and one of them also be keystore, you first specify "n=2" in /client/util/conf.hh, and enter the keystore ip and port.
 		
-		you need to specify the ip and port in config with following format: 
+		you also need to specify the ip and port in config with following format: 
 
 			192.168.0.30:11030
 			192.168.0.31:11031
-			192.168.0.32:11032
-			192.168.0.33:11033
 
-		(the actual order doesn't matter)
+		(the keystore must be one of these settings)
 
   -(Optional) In the configure class of client, /client/util/conf.hh
     - set chunk and secure parameters following the comments
-    - set the number of storage nodes according to your running servers
 
 # MAKE
 
