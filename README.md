@@ -51,7 +51,7 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
  * Configure the key manager
 
-  - Start a key manager by "./KEYSERVER [port]"
+  - Start a key manager by "./KEYMANAGER [port]"
 
  * Configure the client
   
@@ -61,18 +61,20 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
   - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
 
-	Example: you have run 2 servers with "./SERVER [port]" on machines:
-		- 192.168.0.30 with port 11030
-		- 192.168.0.31 with port 11031
+	Example: you have run 4 servers with "./SERVER [port]" on machines:
+    - 192.168.0.30 with port 11030
+    - 192.168.0.31 with port 11031
+    - 192.168.0.32 with port 11032
+    - 192.168.0.33 with port 11033
     
-    If you want 2 of them act as datastore, and one of them also be keystore, you first specify "n=2" in /client/util/conf.hh, and enter the keystore ip and port.
+    If you want 2 of them act as datastore, one of them be keystore and the last on as key manager, you first specify "n=2" in /client/util/conf.hh, also enter the keystore's and keymanager's ips and ports.
 		
-		you also need to specify the ip and port in config with following format: 
+		you also need to specify the ip and port of data store in config with following format: 
 
 			192.168.0.30:11030
 			192.168.0.31:11031
 
-		(the keystore must be one of these settings)
+		(the actual order does not matter)
 
   -(Optional) In the configure class of client, /client/util/conf.hh
     - set chunk and secure parameters following the comments
@@ -89,7 +91,7 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
   - Back to /server/, type "make" to get the executable SERVER program
 
  * To make a keymanager, on the key server machine:
-  - Go to /keyServer/, type "make" to get the executable KEYSERVER program
+  - Go to /keymanager/, type "make" to get the executable KEYMANAGER program
 
 # EXAMPLE
 
