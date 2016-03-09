@@ -11,7 +11,7 @@ all: server
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 server: main.cc $(MAIN_OBJS)  
-	$(CC) $(CFLAGS) $(INCLUDES) -o KEYSERVER main.cc $(MAIN_OBJS) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o KEYMANAGER main.cc $(MAIN_OBJS) $(LIBS)
 
 
 clean:
