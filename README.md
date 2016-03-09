@@ -61,13 +61,15 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
   - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
 
-	Example: you have run 4 servers with "./SERVER [port]" on machines:
+	Example: you have run 3 servers with "./SERVER [port]" on machines:
     - 192.168.0.30 with port 11030
     - 192.168.0.31 with port 11031
     - 192.168.0.32 with port 11032
-    - 192.168.0.33 with port 11033
     
-    If you want 2 of them act as datastore, one of them be keystore and the last on as key manager, you first specify "n=2" in /client/util/conf.hh, also enter the keystore's and keymanager's ips and ports.
+    If you want 2 of them act as datastore, one of them be keystore and the last on as key manager, you first specify "n=2" in /client/util/conf.hh, also enter the keystore's ip and port.
+    
+    - keystoreIP_ = "192.168.0.32";
+    - keystorePort_ = 11032;
 		
 		you also need to specify the ip and port of data store in config with following format: 
 
