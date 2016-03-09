@@ -68,8 +68,7 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
     
     If you want 2 of them act as datastore, one of them be keystore and the last on as key manager, you first specify "n=2" in /client/util/conf.hh, also enter the keystore's ip and port.
     
-    - keystoreIP_ = "192.168.0.32";
-    - keystorePort_ = 11032;
+    - keystoreIP_ = "192.168.0.32"; keystorePort_ = 11032;
 		
 		you also need to specify the ip and port of data store in config with following format: 
 
