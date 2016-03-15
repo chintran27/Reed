@@ -152,6 +152,7 @@ class Uploader{
         /* size of share metadata header */
         int shareMDEntrySize_;
 
+
         /* thread id array */
         pthread_t tid_[UPLOAD_NUM_THREADS];
 
@@ -171,7 +172,7 @@ class Uploader{
          * @param p - input large prime number
          * @param total - input total number of clouds
          * @param subset - input number of clouds to be chosen
-         *
+         * @param ip - keystore ip
          */
         Uploader(int total, int subset, int userID);
 

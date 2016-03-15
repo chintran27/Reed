@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
 		/* object initialization */
         uploaderObj = new Uploader(n,n,userID);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
-		keyObj = new KeyEx(encoderObj, securetype);
+		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");
 
 		keyObj->new_file(userID, argv[1], namesize);
@@ -253,7 +253,7 @@ int main(int argc, char *argv[]){
         timerStart(&timer);
         uploaderObj = new Uploader(n,n,userID);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
-		keyObj = new KeyEx(encoderObj, securetype);
+		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");
 
 		keyObj->update_file(userID, argv[1], namesize);

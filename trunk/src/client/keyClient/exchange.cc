@@ -176,7 +176,9 @@ void* KeyEx::thread_handler(void* param){
 	return NULL;
 }
 
-KeyEx::KeyEx(Encoder* obj, int securetype){
+KeyEx::KeyEx(Encoder* obj, int securetype, char *ip, char* ksip, int ksport){
+	ksip_ = ksip;
+	ksport_ = ksport;
 	/* init big number var */
 	rsa_ = RSA_new();
 	ctx_ = BN_CTX_new();
@@ -197,7 +199,7 @@ KeyEx::KeyEx(Encoder* obj, int securetype){
 	param_keyex* temp = (param_keyex*)malloc(sizeof(param_keyex));
 	temp->index = 0;
 	temp->obj = this;
-	sock_[0] = new Ssl("192.168.0.26",1101,0);
+	sock_[0] = new Ssl(ip,1101,0);
 
 
 	/* create key generation thread */
@@ -378,7 +380,7 @@ void KeyEx::create_table(){
 void KeyEx::update_file(int user, char* filepath, int pathSize){
 	int indicator = 2;
 
-	Socket *sock = new Socket("192.168.0.30", 1101, user);
+	Socket *sock = new Socket(ksip_, ksport_, user);
 	// SEND 1: (4 byte) state update indicator
 	sock->genericSend((char*)&indicator, sizeof(int));
 
@@ -579,7 +581,7 @@ void KeyEx::new_file(int user, char* filepath, int pathSize){
 	//send indicator
 	int indicator = 1;
 
-	Socket *sock = new Socket("192.168.0.30", 1101, user);
+	Socket *sock = new Socket(ksip_, ksport_, user);
 
 	sock->genericSend((char*)&indicator, sizeof(int));
 

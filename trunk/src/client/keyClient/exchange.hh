@@ -65,6 +65,10 @@ private:
 
 	// array for SSL structures
 	Ssl* sock_[SEND_THREADS];
+
+	char* ksip_;
+
+	int ksport_;
 	
 
 public:
@@ -113,7 +117,7 @@ public:
      *
      *
      */
-    KeyEx(Encoder* obj, int securetype);
+    KeyEx(Encoder* obj, int securetype, char* ip, char* ksip, int ksport);
 
     /*
      * destructor of key exchange

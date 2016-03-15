@@ -39,6 +39,14 @@ class Configuration{
 
       /* chunk end list size */
       int chunkEndIndexListSize_;
+
+	  char* keymanagerIP_;
+
+	  int keymanagerPort_;
+
+	  char* keystoreIP_;
+
+	  int keystorePort_;
   public:
       /* constructor */
       Configuration(){
@@ -50,6 +58,12 @@ class Configuration{
         shareBufferSize_ = 16*1024*n_;
         bufferSize_ = 1024*1024*1024;
         chunkEndIndexListSize_ = 1024*1024;
+
+		keymanagerIP_ = "192.168.0.26";
+		keymanagerPort_ = 1101;
+
+		keystoreIP_ = "192.168.0.30";
+		keystorePort_ = 1104;
       }
 
       inline int getN() { return n_; }
@@ -67,6 +81,11 @@ class Configuration{
       inline int getBufferSize() { return bufferSize_; }
 
       inline int getListSize() { return chunkEndIndexListSize_; }
+
+	  inline char* getkmIP() { return keymanagerIP_; }
+	  inline int getkmPort() { return keymanagerPort_; }
+	  inline char* getksIP() { return keystoreIP_; }
+	  inline int getksPort() { return keystorePort_; }
 
 };
 

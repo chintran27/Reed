@@ -134,12 +134,12 @@ Uploader::Uploader(int total, int subset, int userID){
         int ret = fscanf(fp,"%s",line);
         if (ret == 0) printf("fail to load config file\n");
         char * token = strtok(line,ch);
-        char* ip = token;
+        char* cur_ip = token;
         token = strtok(NULL, ch);
         int port = atoi(token);
 
         /* set sockets */
-        socketArray_[i] = new Socket(ip ,port, userID);
+        socketArray_[i] = new Socket(cur_ip ,port, userID);
         accuData_[i] = 0;
         accuUnique_[i] = 0;
     }
