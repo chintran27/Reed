@@ -53,12 +53,17 @@ Dependency:
 
  * Configure the storage server (can be specified as keystore or datastore or both in conf.hh)
 
+	For data store:
 	- Make sure there are three directories under /server/
 	- "DedupDB" for levelDB logs
 	- "RecipeFiles" for temp recipe files
 	- "ShareContainers" for share local cache
 	- Start a server by "./SERVER [port]"
 
+	For key store:
+	- Make sure there is a directory under /server
+	- "keystore" for key states
+	- Start a server by "./SERVER [port]"
 
  * Configure the key manager
 
