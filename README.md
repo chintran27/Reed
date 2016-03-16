@@ -38,7 +38,7 @@ For linux user you can install the LevelDB dependency, OpenSSL and Boost by the 
 
  * sudo apt-get install libssl-dev libboost-all-dev libsnappy-dev 
 
-REED also need following packages to support CP-ABE toolkit:
+REED client also needs following packages to support CP-ABE toolkit:
 
  * sudo apt-get install flex bison libgmp3-dev libglib2.0-dev
 
