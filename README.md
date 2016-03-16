@@ -23,8 +23,10 @@ This software requires the following libraries:
  * OpenSSL (https://www.openssl.org/source/openssl-1.0.2a.tar.gz)
  * GF-Complete (https://github.com/ceph/gf-complete/archive/master.zip)
  * boost C++ library (http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz)
+ * GMP library (https://gmplib.org/)
  * LevelDB (https://github.com/google/leveldb/archive/master.zip)
- * CP-ABE toolkit (http://acsc.cs.utexas.edu/cpabe/)
+ * CP-ABE toolkit and libbswabe library (http://acsc.cs.utexas.edu/cpabe/) 
+ * PBC library (https://crypto.stanford.edu/pbc/)
 
 The GF-Complete and LevelDB are packed in /client/lib/ and /server/lib/ respectively.
 
@@ -34,8 +36,17 @@ The GF-Complete and LevelDB are packed in /client/lib/ and /server/lib/ respecti
 
 For linux user you can install the LevelDB dependency, OpenSSL and Boost by the following:
 
- * sudo apt-get install libssl-dev libboost-all-dev libsnappy-dev
+ * sudo apt-get install libssl-dev libboost-all-dev libsnappy-dev 
 
+REED also need following packages to support CP-ABE toolkit:
+
+ * sudo apt-get install flex bison libgmp3-dev libglib2.0-dev
+
+Dependency:
+
+ * Install pbc-0.5.14
+ * Install libbswabe-0.9
+ * Install cpabe-0.11
 
 # CONFIGURATION
 
