@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_IP_SIZE 20
+
 using namespace std;
 
 /*
@@ -20,12 +22,12 @@ class Configuration{
 		int numOfStore_;
 
 		/* only single key manager is allowed for current version */
-		char keymanagerIP_[20];
+		char keymanagerIP_[MAX_IP_SIZE];
 
 		int keymanagerPort_;
 
 		/* only single key store is allowed for current version */
-		char keystoreIP_[20];
+		char keystoreIP_[MAX_IP_SIZE];
 		
 		int keystorePort_;
 	public:
