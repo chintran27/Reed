@@ -82,18 +82,34 @@ int main(int argc, char *argv[]){
     }
 
     confObj = new Configuration();
-    /* fix parameters here */
-    /* TO DO: load from config file */
+    /* load from config file 
+	 *
+	 * Get the total number of data stores
+	 *
+	 * */
     n = confObj->getN();
-    m = confObj->getM();
-    k = confObj->getK();
-    r = confObj->getR();
 
-    /* initialize buffers */
-    int bufferSize = confObj->getBufferSize();
-    int chunkEndIndexListSize = confObj->getListSize();
-    int secretBufferSize = confObj->getSecretBufferSize();
-    int shareBufferSize = confObj->getShareBufferSize();
+    /* initialize buffers 
+	 *
+	 * Based on CDStore settings: https://github.com/chintran27/CDStore
+	 *
+	 * Buffer Size: 1GB
+	 * Chunk Index List Size: 1024KB
+	 * Secret Buffer Size for each secret object: 16KB
+	 * Share Buffer Size for aggregated cipher block: numOfStore*16KB
+	 *
+	 * m, k, r are deprecate in REED
+	 *
+	 * */
+
+    m = 1; // @deprecate
+    k = n - m; // @deprecate
+    r = k - 1; // @deprecate
+
+    int bufferSize = 1024*1024*1024;
+    int chunkEndIndexListSize = 1024*1024;
+    int secretBufferSize = 16*1024;
+    int shareBufferSize = n*16*1024;
 
     unsigned char *secretBuffer, *shareBuffer;
     unsigned char tmp[secretBufferSize];

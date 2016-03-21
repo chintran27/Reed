@@ -12,11 +12,7 @@ all: client
 client: ./main.cc $(MAIN_OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o CLIENT ./main.cc $(MAIN_OBJS) ./lib/gf_complete.a $(LIBS)
 
-backup: ./backup.cc $(MAIN_OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o BACKUP ./backup.cc $(MAIN_OBJS) ./lib/gf_complete.a ./lib/libhashfile.a $(LIBS)
-	
 
 clean:
 	@rm -f CLIENT
-	@rm -f BACKUP
 	@rm -f $(MAIN_OBJS)
