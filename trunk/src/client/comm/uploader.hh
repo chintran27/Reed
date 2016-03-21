@@ -25,6 +25,7 @@
 #include "socket.hh"
 #include "CDCodec.hh"
 #include "CryptoPrimitive.hh"
+#include "conf.hh"
 
 /* upload ringbuffer size */
 #define UPLOAD_RB_SIZE 2048
@@ -172,9 +173,9 @@ class Uploader{
          * @param p - input large prime number
          * @param total - input total number of clouds
          * @param subset - input number of clouds to be chosen
-         * @param ip - keystore ip
+         * @param confObj - configuration object
          */
-        Uploader(int total, int subset, int userID);
+        Uploader(int total, int subset, int userID, Configuration* confObj);
 
         /*
          * destructor

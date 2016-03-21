@@ -139,7 +139,7 @@ int main(int argc, char *argv[]){
     if (strncmp(opt,"-u",2) == 0 || strncmp(opt, "-a", 2) == 0){
 
 		/* object initialization */
-        uploaderObj = new Uploader(n,n,userID);
+        uploaderObj = new Uploader(n,n,userID, confObj);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
 		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]){
     if (strncmp(opt,"-d",2) == 0 || strncmp(opt, "-a", 2) == 0){
 		/* init objects */
         decoderObj = new Decoder(CAONT_RS_TYPE, n, m, r, securetype, argv[1]);
-        downloaderObj = new Downloader(n,n,userID,decoderObj);
+        downloaderObj = new Downloader(n,n,userID,decoderObj,confObj);
         double timer,split,bw;
         FILE * fw = fopen("./decoded_copy","wb");
 
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]){
     if (strncmp(opt,"-r",2) == 0){
         double timer,split,bw;
         timerStart(&timer);
-        uploaderObj = new Uploader(n,n,userID);
+        uploaderObj = new Uploader(n,n,userID,confObj);
         encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
 		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");

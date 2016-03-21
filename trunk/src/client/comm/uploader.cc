@@ -95,7 +95,7 @@ void* Uploader::thread_handler(void* param){
  * @param subset - input number of clouds to be chosen
  *
  */
-Uploader::Uploader(int total, int subset, int userID){
+Uploader::Uploader(int total, int subset, int userID, Configuration* confObj){
     total_ = total;
     subset_ = subset;
 

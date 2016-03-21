@@ -85,7 +85,7 @@ void* Downloader::thread_handler(void* param){
  * @param subset - input number of clouds to be chosen
  * @param obj - decoder pointer
  */
-Downloader::Downloader(int total, int subset, int userID, Decoder* obj){
+Downloader::Downloader(int total, int subset, int userID, Decoder* obj, Configuration* confObj){
     /* set private variables */
     total_ = total;
     subset_ = subset;

@@ -46,6 +46,7 @@
 #include "socket.hh"
 #include "decoder.hh"
 #include "CryptoPrimitive.hh"
+#include "conf.hh"
 
 using namespace std;
 
@@ -170,7 +171,7 @@ class Downloader{
          * @param subset - input number of clouds to be chosen
          * @param obj - decoder pointer
          */
-        Downloader(int total, int subset, int userID, Decoder* obj);
+        Downloader(int total, int subset, int userID, Decoder* obj, Configuration* confObj);
 
         /*
          * destructor
