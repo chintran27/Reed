@@ -15,5 +15,5 @@ server: main.cc $(MAIN_OBJS)
 
 
 clean:
-	@rm -f KEYSERVER
+	@rm -f KEYMANAGER
 	@rm -f $(MAIN_OBJS)
