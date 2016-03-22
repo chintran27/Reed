@@ -99,11 +99,6 @@ Downloader::Downloader(int total, int subset, int userID, Decoder* obj, Configur
     socketArray_ = (Socket**)malloc(sizeof(Socket*)*total_);
     headerArray_ = (fileShareMDHead_t **)malloc(sizeof(fileShareMDHead_t*)*total_);
 
-    /* open config file */
-    FILE* fp = fopen("./config","rb");
-    char line[225];
-    const char ch[2] = ":";
-
     /* initialization loop  */
     for(int i = 0; i < total_; i++){
         signalBuffer_[i] = new RingBuffer<init_t>(DOWNLOAD_RB_SIZE, true, 1);
@@ -117,19 +112,10 @@ Downloader::Downloader(int total, int subset, int userID, Decoder* obj, Configur
         param->obj = this;
         pthread_create(&tid_[i],0,&thread_handler, (void*)param);
 
-        /* get config parameters */
-        int ret = fscanf(fp,"%s",line);
-        if(ret == 0) printf("fail to load config file\n");
-        char * token = strtok(line,ch);
-        char* ip = token;
-        token = strtok(NULL, ch);
-        int port = atoi(token);
-
         /* create sockets */
-        socketArray_[i] = new Socket(ip ,port, userID);
+        socketArray_[i] = new Socket(confObj->getdsIP(i) ,confObj->getdsPort(i), userID);
     }
 
-    fclose(fp);
     fileMDHeadSize_ = sizeof(fileShareMDHead_t);
     shareMDEntrySize_ = sizeof(shareMDEntry_t);
 }

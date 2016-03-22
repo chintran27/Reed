@@ -111,10 +111,6 @@ Uploader::Uploader(int total, int subset, int userID, Configuration* confObj){
     shareSizeArray_ = (int **)malloc(sizeof(int *)*total_);
 
 
-    /* read server ip & port from config file */
-    FILE* fp = fopen("./config","rb");
-    char line[225];
-    const char ch[2] = ":";
 
     for(int i = 0; i < total_; i++){
         ringBuffer_[i] = new RingBuffer<Item_t>(UPLOAD_RB_SIZE, true, 1);
@@ -130,21 +126,13 @@ Uploader::Uploader(int total, int subset, int userID, Configuration* confObj){
         param->obj = this;
         pthread_create(&tid_[i],0,&thread_handler, (void*)param);
 
-        /* line by line read config file*/
-        int ret = fscanf(fp,"%s",line);
-        if (ret == 0) printf("fail to load config file\n");
-        char * token = strtok(line,ch);
-        char* cur_ip = token;
-        token = strtok(NULL, ch);
-        int port = atoi(token);
 
         /* set sockets */
-        socketArray_[i] = new Socket(cur_ip ,port, userID);
+        socketArray_[i] = new Socket(confObj->getdsIP(i) ,confObj->getdsPort(i), userID);
         accuData_[i] = 0;
         accuUnique_[i] = 0;
     }
 
-    fclose(fp);
     fileMDHeadSize_ = sizeof(fileShareMDHead_t);
     shareMDEntrySize_ = sizeof(shareMDEntry_t);
 
