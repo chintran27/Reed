@@ -88,13 +88,19 @@ Dependency:
     
     If you want one server act as datastore, the other one to be keystore, you need modify the /client/util/conf.hh as following:
     
-    - numOfStore_ = 1;
+    	- numOfStore_ = 1;
     
-    - strcpy(datastoreIP_[0], "192.168.0.30"); datastorePort_[0] = 11030;
+    	- strcpy(datastoreIP_[0], "192.168.0.30"); 
+    	
+    	- datastorePort_[0] = 11030;
     
-    - strcpy(keymanagerIP_, "192.168.0.32"); keymanagerPort_ = 11032;
+    	- strcpy(keymanagerIP_, "192.168.0.32"); 
+    	
+    	- keymanagerPort_ = 11032;
     
-    - strcpy(keystoreIP_, "192.168.0.31"); keystorePort_ = 11031;
+    	- strcpy(keystoreIP_, "192.168.0.31"); 
+    	
+    	- keystorePort_ = 11031;
 
 
 # MAKE
