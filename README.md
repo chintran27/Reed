@@ -84,7 +84,7 @@ Dependency:
 	
 	And you have run 1 key manager with "./KEYMANAGER [port]" on machine:
 
-	- 192.168.0.32 with port 11032
+    	- 192.168.0.32 with port 11032
     
     If you want one server act as datastore, the other one to be keystore, you need modify the /client/util/conf.hh as following:
     
