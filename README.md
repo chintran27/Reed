@@ -73,28 +73,29 @@ Dependency:
   
   - Specify the key manager and key store IPs, ports in /client/util/conf.hh
 
-  - Specify the number of storage nodes in /client/util/conf.hh, modifying the "n" value
+  - Specify the number of storage nodes in /client/util/conf.hh, modifying the "numOfStore_" value
 
-  - In the configure file /client/config, specify the storage nodes line by line with [IP]:[port]
+  - Specify the data stores IPs and Ports according to your "numOfStore_" in /client/util/conf.hh
+	
+  	Example: you have run 2 servers with "./SERVER [port]" on machines:
+  
+    	- 192.168.0.30 with port 11030
+    	- 192.168.0.31 with port 11031
+	
+	And you have run 1 key manager with "./KEYMANAGER [port]" on machine:
 
-	Example: you have run 3 servers with "./SERVER [port]" on machines:
-    - 192.168.0.30 with port 11030
-    - 192.168.0.31 with port 11031
-    - 192.168.0.32 with port 11032
+	- 192.168.0.32 with port 11032
     
-    If you want 2 of them act as datastore, one of them be keystore and the last on as key manager, you first specify "n=2" in /client/util/conf.hh, also enter the keystore's ip and port.
+    If you want one server act as datastore, the other one to be keystore, you need modify the /client/util/conf.hh as following:
     
-    - keystoreIP_ = "192.168.0.32"; keystorePort_ = 11032;
-		
-		you also need to specify the ip and port of data store in config with following format: 
+    - numOfStore_ = 1;
+    
+    - strcpy(datastoreIP_[0], "192.168.0.30"); datastorePort_[0] = 11030;
+    
+    - strcpy(keymanagerIP_, "192.168.0.32"); keymanagerPort_ = 11032;
+    
+    - strcpy(keystoreIP_, "192.168.0.31"); keystorePort_ = 11031;
 
-			192.168.0.30:11030
-			192.168.0.31:11031
-
-		(the actual order does not matter)
-
-  -(Optional) In the configure class of client, /client/util/conf.hh
-    - set chunk and secure parameters following the comments
 
 # MAKE
 
