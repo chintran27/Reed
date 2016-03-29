@@ -27,7 +27,7 @@ This software requires the following libraries:
  * CP-ABE toolkit and libbswabe library (http://acsc.cs.utexas.edu/cpabe/) 
  * PBC library (https://crypto.stanford.edu/pbc/)
 
-The GF-Complete and LevelDB are packed in /client/lib/ and /server/lib/ respectively.
+The LevelDB is packed in /server/lib/.
 
 
 # INSTALLATION
