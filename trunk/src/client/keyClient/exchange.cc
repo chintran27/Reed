@@ -490,7 +490,7 @@ void KeyEx::update_file(int user, char* filepath, int pathSize){
 	fclose(fp);
 
 	// write policy
-	
+
 	int i;
 	int tt = 500;
 
@@ -524,7 +524,7 @@ void KeyEx::update_file(int user, char* filepath, int pathSize){
 	snprintf(cmd, sizeof(cmd), "cpabe-enc keys/pub_key temp_cpabe '%s'", p);
 
 	system(cmd);
-	
+
 
 	// get new cipher size
 	fp = fopen("temp_cpabe.cpabe","r");
@@ -565,8 +565,8 @@ void KeyEx::update_file(int user, char* filepath, int pathSize){
 	fp = fopen(name, "w");
 	fwrite(v1, length, 1, fp);
 	fclose(fp);
-//	split = timerSplit(&timer);
-//	printf("stub update timer: %lf\n", split);
+	//	split = timerSplit(&timer);
+	//	printf("stub update timer: %lf\n", split);
 
 	delete(sock);
 	free(v1);

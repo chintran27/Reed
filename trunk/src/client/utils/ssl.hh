@@ -32,53 +32,53 @@
 using namespace std;
 
 class Ssl{
-    private:
-        /* port number */
-        int hostPort_;
+	private:
+		/* port number */
+		int hostPort_;
 
-        /* ip address */
-        char* hostName_;
+		/* ip address */
+		char* hostName_;
 
-        /* address structure */
-        struct sockaddr_in myAddr_;
+		/* address structure */
+		struct sockaddr_in myAddr_;
 
-        /* host socket */
+		/* host socket */
 		SSL_CTX* ctx_;
 		SSL* ssl_;
 
-    public:
+	public:
 
-        /*
-         * constructor: initialize sock structure and connect
-         *
-         * @param ip - server ip address
-         * @param port - port number
-         */
-        Ssl(char *ip, int port, int userID);
-        
+		/*
+		 * constructor: initialize sock structure and connect
+		 *
+		 * @param ip - server ip address
+		 * @param port - port number
+		 */
+		Ssl(char *ip, int port, int userID);
+
 		int hostSock_;
 
-        /*
-         * @ destructor
-         */
-        ~Ssl();
+		/*
+		 * @ destructor
+		 */
+		~Ssl();
 
-        /*
-         * basic send function
-         * 
-         * @param raw - raw data buffer_
-         * @param rawSize - size of raw data
-         */
-        int genericSend(char * raw, int rawSize);
+		/*
+		 * basic send function
+		 * 
+		 * @param raw - raw data buffer_
+		 * @param rawSize - size of raw data
+		 */
+		int genericSend(char * raw, int rawSize);
 
-        /*
-         * data download function
-         *
-         * @param raw - raw data buffer
-         * @param rawSize - the size of data to be downloaded
-         * @return raw
-         */
-        int genericDownload(char *raw, int rawSize);
+		/*
+		 * data download function
+		 *
+		 * @param raw - raw data buffer
+		 * @param rawSize - the size of data to be downloaded
+		 * @return raw
+		 */
+		int genericDownload(char *raw, int rawSize);
 
 		void closeConn();
 };

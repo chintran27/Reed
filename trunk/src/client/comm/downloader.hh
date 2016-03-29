@@ -56,153 +56,153 @@ using namespace std;
  *
  */
 class Downloader{
-    private:
-        //prime number for compute hash
-        long prime_;
+	private:
+		//prime number for compute hash
+		long prime_;
 
-        //total number of clouds
-        int total_;
+		//total number of clouds
+		int total_;
 
-        //number of a subset of clouds
-        int subset_;
+		//number of a subset of clouds
+		int subset_;
 
-    public:
-        /* file metadata header structure */
-        typedef struct{
-            int fullNameSize; 
-            long fileSize;
-            int numOfPastSecrets;
-            long sizeOfPastSecrets;
-            int numOfComingSecrets;
-            long sizeOfComingSecrets;
-        }fileShareMDHead_t;
+	public:
+		/* file metadata header structure */
+		typedef struct{
+			int fullNameSize; 
+			long fileSize;
+			int numOfPastSecrets;
+			long sizeOfPastSecrets;
+			int numOfComingSecrets;
+			long sizeOfComingSecrets;
+		}fileShareMDHead_t;
 
-        /* share metadata header structure */
-        typedef struct {
-            unsigned char shareFP[FP_SIZE]; 
-            int secretID;
-            int secretSize;
-            int shareSize;
-        } shareMDEntry_t;
+		/* share metadata header structure */
+		typedef struct {
+			unsigned char shareFP[FP_SIZE]; 
+			int secretID;
+			int secretSize;
+			int shareSize;
+		} shareMDEntry_t;
 
-        /* file share count struct for download */
-        typedef struct{
-            long fileSize;
-            int numOfShares;
-        }shareFileHead_t;
+		/* file share count struct for download */
+		typedef struct{
+			long fileSize;
+			int numOfShares;
+		}shareFileHead_t;
 
-        /* share detail struct for download */
-        typedef struct{
-            int secretID;
-            int secretSize;
-            int shareSize;
-        }shareEntry_t;
+		/* share detail struct for download */
+		typedef struct{
+			int secretID;
+			int secretSize;
+			int shareSize;
+		}shareEntry_t;
 
-        /* file header object structure for ringbuffer */
-        typedef struct{
-            shareFileHead_t file_header;
-            char data[RING_BUFFER_DATA_SIZE];
-        }fileHeaderObj_t;
+		/* file header object structure for ringbuffer */
+		typedef struct{
+			shareFileHead_t file_header;
+			char data[RING_BUFFER_DATA_SIZE];
+		}fileHeaderObj_t;
 
-        /* share header object structure for ringbuffer */
-        typedef struct{
-            shareEntry_t share_header;
-            char data[RING_BUFFER_DATA_SIZE];
-        }shareHeaderObj_t;
+		/* share header object structure for ringbuffer */
+		typedef struct{
+			shareEntry_t share_header;
+			char data[RING_BUFFER_DATA_SIZE];
+		}shareHeaderObj_t;
 
-        /* union of objects for unifying ringbuffer objects */
-        typedef struct{
-            int type;
-            union{
-                fileHeaderObj_t fileObj;
-                shareHeaderObj_t shareObj;
-            };
-        }Item_t;
+		/* union of objects for unifying ringbuffer objects */
+		typedef struct{
+			int type;
+			union{
+				fileHeaderObj_t fileObj;
+				shareHeaderObj_t shareObj;
+			};
+		}Item_t;
 
-        /* init object for initiating download */
-        typedef struct{
-            int type;
-            char* filename;
-            int namesize;
-        }init_t;
+		/* init object for initiating download */
+		typedef struct{
+			int type;
+			char* filename;
+			int namesize;
+		}init_t;
 
-        /* thread parameter structure */
-        typedef struct{
-            int cloudIndex;
-            Downloader* obj;
-        }param_t;
+		/* thread parameter structure */
+		typedef struct{
+			int cloudIndex;
+			Downloader* obj;
+		}param_t;
 
-        /* file header pointer array for modifying header */
-        fileShareMDHead_t ** headerArray_;
+		/* file header pointer array for modifying header */
+		fileShareMDHead_t ** headerArray_;
 
-        /* socket array */
-        Socket** socketArray_;
+		/* socket array */
+		Socket** socketArray_;
 
-        /* metadata buffer */
-        char ** downloadMetaBuffer_;
+		/* metadata buffer */
+		char ** downloadMetaBuffer_;
 
-        /* container buffer */
-        char ** downloadContainer_;
+		/* container buffer */
+		char ** downloadContainer_;
 
-        /* size of file header */
-        int fileMDHeadSize_;
+		/* size of file header */
+		int fileMDHeadSize_;
 
-        /* size of share header */
-        int shareMDEntrySize_;
+		/* size of share header */
+		int shareMDEntrySize_;
 
-        /* thread id array */
-        pthread_t tid_[DOWNLOAD_NUM_THREADS];
+		/* thread id array */
+		pthread_t tid_[DOWNLOAD_NUM_THREADS];
 
-        /* decoder object pointer */
-        Decoder* decodeObj_;
+		/* decoder object pointer */
+		Decoder* decodeObj_;
 
-        /* signal buffer */
-        RingBuffer<init_t>** signalBuffer_;
+		/* signal buffer */
+		RingBuffer<init_t>** signalBuffer_;
 
-        /* download ringbuffer */
-        RingBuffer<Item_t>** ringBuffer_;
+		/* download ringbuffer */
+		RingBuffer<Item_t>** ringBuffer_;
 
 
-        /*
-         * constructor
-         *
-         * @param userID - ID of the user who initiate download
-         * @param total - input total number of clouds
-         * @param subset - input number of clouds to be chosen
-         * @param obj - decoder pointer
-         */
-        Downloader(int total, int subset, int userID, Decoder* obj, Configuration* confObj);
+		/*
+		 * constructor
+		 *
+		 * @param userID - ID of the user who initiate download
+		 * @param total - input total number of clouds
+		 * @param subset - input number of clouds to be chosen
+		 * @param obj - decoder pointer
+		 */
+		Downloader(int total, int subset, int userID, Decoder* obj, Configuration* confObj);
 
-        /*
-         * destructor
-         *
-         */
-        ~Downloader();
+		/*
+		 * destructor
+		 *
+		 */
+		~Downloader();
 
 		int downloadStub(char* name);
 
-        /*
-         * test if it's the end of downloading a file
-         *
-         */
-        int indicateEnd();
+		/*
+		 * test if it's the end of downloading a file
+		 *
+		 */
+		int indicateEnd();
 
-        /*
-         * main procedure for downloading a file
-         *
-         * @param filename - targeting filename
-         * @param namesize - size of filename
-         * @param numOfCloud - number of clouds that we download data
-         *
-         */
-        int downloadFile(char* filename, int namesize, int numOfCloud);	
+		/*
+		 * main procedure for downloading a file
+		 *
+		 * @param filename - targeting filename
+		 * @param namesize - size of filename
+		 * @param numOfCloud - number of clouds that we download data
+		 *
+		 */
+		int downloadFile(char* filename, int namesize, int numOfCloud);	
 
-        /*
-         * downloader thread handler
-         * 
-         * @param param - input param structure
-         *
-         */
-        static void* thread_handler(void* param);
+		/*
+		 * downloader thread handler
+		 * 
+		 * @param param - input param structure
+		 *
+		 */
+		static void* thread_handler(void* param);
 };
 #endif

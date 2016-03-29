@@ -28,101 +28,101 @@
 using namespace std;
 
 class Socket{
-    private:
-        /* port number */
-        int hostPort_;
+	private:
+		/* port number */
+		int hostPort_;
 
-        /* ip address */
-        char* hostName_;
+		/* ip address */
+		char* hostName_;
 
-        /* address structure */
-        struct sockaddr_in myAddr_;
+		/* address structure */
+		struct sockaddr_in myAddr_;
 
-        /* host socket */
+		/* host socket */
 
 		char buffer_[SOCKET_BUFFER_SIZE];
 
-    public:
+	public:
 
-        /*
-         * constructor: initialize sock structure and connect
-         *
-         * @param ip - server ip address
-         * @param port - port number
-         */
-        Socket(char *ip, int port, int userID);
-        
+		/*
+		 * constructor: initialize sock structure and connect
+		 *
+		 * @param ip - server ip address
+		 * @param port - port number
+		 */
+		Socket(char *ip, int port, int userID);
+
 		int hostSock_;
 
-        /*
-         * @ destructor
-         */
-        ~Socket();
+		/*
+		 * @ destructor
+		 */
+		~Socket();
 
-        /*
-         * basic send function
-         * 
-         * @param raw - raw data buffer_
-         * @param rawSize - size of raw data
-         */
-        int genericSend(char * raw, int rawSize);
+		/*
+		 * basic send function
+		 * 
+		 * @param raw - raw data buffer_
+		 * @param rawSize - size of raw data
+		 */
+		int genericSend(char * raw, int rawSize);
 
-        /*
-         * metadata send function
-         *
-         * @param raw - raw data buffer_
-         * @param rawSize - size of raw data
-         *
-         */
-        int sendMeta(char * raw, int rawSize);
+		/*
+		 * metadata send function
+		 *
+		 * @param raw - raw data buffer_
+		 * @param rawSize - size of raw data
+		 *
+		 */
+		int sendMeta(char * raw, int rawSize);
 
-        /*
-         * data send function
-         *
-         * @param raw - raw data buffer_
-         * @param rawSize - size of raw data
-         *
-         */ 
-        int sendData(char * raw, int rawSize); 
+		/*
+		 * data send function
+		 *
+		 * @param raw - raw data buffer_
+		 * @param rawSize - size of raw data
+		 *
+		 */ 
+		int sendData(char * raw, int rawSize); 
 
-        /*
-         * status recv function
-         *
-         * @param statusList - return int list
-         * @param num - num of returned indicator
-         *
-         * @return statusList
-         */
-        int getStatus(bool * statusList, int* numOfShare); 
+		/*
+		 * status recv function
+		 *
+		 * @param statusList - return int list
+		 * @param num - num of returned indicator
+		 *
+		 * @return statusList
+		 */
+		int getStatus(bool * statusList, int* numOfShare); 
 
-        /*
-         * initiate downloading a file
-         *
-         * @param filename - the full name of the targeting file
-         * @param namesize - the size of the file path
-         *
-         *
-         */
-        int initDownload(char * filename, int namesize);
+		/*
+		 * initiate downloading a file
+		 *
+		 * @param filename - the full name of the targeting file
+		 * @param namesize - the size of the file path
+		 *
+		 *
+		 */
+		int initDownload(char * filename, int namesize);
 
-        /*
-         * download a chunk of data
-         *
-         * @param raw - the returned raw data chunk
-         * @param retSize - the size of returned data chunk
-         * @return raw 
-         * @return retSize
-         */ 
-        int downloadChunk(char* raw, int* retSize);
+		/*
+		 * download a chunk of data
+		 *
+		 * @param raw - the returned raw data chunk
+		 * @param retSize - the size of returned data chunk
+		 * @return raw 
+		 * @return retSize
+		 */ 
+		int downloadChunk(char* raw, int* retSize);
 
-        /*
-         * data download function
-         *
-         * @param raw - raw data buffer
-         * @param rawSize - the size of data to be downloaded
-         * @return raw
-         */
-        int genericDownload(char *raw, int rawSize);
+		/*
+		 * data download function
+		 *
+		 * @param raw - raw data buffer
+		 * @param rawSize - the size of data to be downloaded
+		 * @return raw
+		 */
+		int genericDownload(char *raw, int rawSize);
 };
 
 #endif

@@ -35,207 +35,207 @@
 using namespace std;
 
 class KeyEx{
-private:
-	// total chunk number
-	int n_;
-    
-	// key file object
-    BIO* key_;
+	private:
+		// total chunk number
+		int n_;
 
-    // RSA object
-    RSA *rsa_;
+		// key file object
+		BIO* key_;
 
-    // BN ctx
-    BN_CTX *ctx_;
+		// RSA object
+		RSA *rsa_;
 
-    // random number
-    BIGNUM *r_;
+		// BN ctx
+		BN_CTX *ctx_;
 
-    // inverse
-    BIGNUM *inv_;
+		// random number
+		BIGNUM *r_;
 
-    // temp
-    BIGNUM *mid_;
+		// inverse
+		BIGNUM *inv_;
 
-    // hash value convert to BN
-    BIGNUM *h_;
+		// temp
+		BIGNUM *mid_;
 
-	// array for record random numbers for each chunk
-	BIGNUM **record_;
+		// hash value convert to BN
+		BIGNUM *h_;
 
-	// array for SSL structures
-	Ssl* sock_[SEND_THREADS];
+		// array for record random numbers for each chunk
+		BIGNUM **record_;
 
-	char* ksip_;
+		// array for SSL structures
+		Ssl* sock_[SEND_THREADS];
 
-	int ksport_;
-	
+		char* ksip_;
 
-public:
-
-	// hash table entry pair
-	typedef struct{
-		unsigned char hash[HASH_SIZE];
-		unsigned char key[HASH_SIZE];
-	}entry_t;
-
-	// thread handler structure
-	typedef struct{
-		int index;
-		KeyEx* obj;
-	}param_keyex;
-
-	// ring buffer item structure
-	typedef struct{
-		unsigned char data[CHUNK_DATA_SIZE];
-		unsigned char key[HASH_SIZE];
-		int chunkID;
-		int chunkSize;
-		int end;
-	}Chunk_t;
-
-	// encoder object
-	Encoder* encodeObj_;
-
-	// input ring buffer
-	RingBuffer<Chunk_t>* inputbuffer_;
-	
-	// hash table for cache keys
-	HashTable<entry_t>* hashtable_;
-
-	// thread id
-	pthread_t tid_;
-
-	char current_key[32];
-
-	// crpyto object
-	CryptoPrimitive* cryptoObj_;
-
-    /*
-     * constructor of key exchange
-     *
-     *
-     *
-     */
-    KeyEx(Encoder* obj, int securetype, char* ip, char* ksip, int ksport);
-
-    /*
-     * destructor of key exchange
-     */
-    ~KeyEx();
-
-	/*
-	 * read rsa keys from key file
-	 */
-    bool readKeyFile(char * filename);
-
-	/*
-	 * add chunk to input buffer
-	 */
-	void add(Chunk_t* item);
-
-	/*
-	 * procedure for print a big number in hex
-	 */
-    void printBN(BIGNUM *input);
-
-	/*
-	 * procedure for print a buffer content
-	 */ 
-    void printBuf(unsigned char* buff, int size);
-
-	/*
-	 * procedure for remove blind in returned keys 
-	 *
-	 * @param buff - input big number buffer
-	 * @param size - input big number size
-	 * @param index - the index of recorded random number r
-	 */ 
-    void elimination(unsigned char* buff, int size, int index);
+		int ksport_;
 
 
-	/*
-	 * procedure for blind hash value
-	 *
-	 * @param hash_buf - input buffer storing hash
-	 * @param size - the size of input hash
-	 * @param ret_buf - the returned buffer holding blinded hash
-	 * @param index - the index of record random number r
-	 *
-	 */ 
-    void decoration(unsigned char* hash_buf, int size, unsigned char* ret_buf, int index);
+	public:
 
-	/*
-	 * procedure for verify returned keys
-	 *
-	 * @param original - the original hash value buffer
-	 * @param buff - the buffer contains returned blinded key
-	 * @param size - the size of hash value
-	 *
-	 * @return 0 if verify pass, otherwise means verification fails
-	 *
-	 */ 
-	int verify(unsigned char* original, unsigned char* buff, int size);
+		// hash table entry pair
+		typedef struct{
+			unsigned char hash[HASH_SIZE];
+			unsigned char key[HASH_SIZE];
+		}entry_t;
 
-	/*
-	 * main procedure for init key generation with key server
-	 *
-	 * @param hash_buf - the buffer holding hash values
-	 * @param size - the size of data
-	 * @param num - the number of hashes
-	 * @param key_buf - the returned buffer contains keys
-	 * @param obj - the pointer to crypto object
-	 *
-	 */ 
-	void keyExchange(unsigned char* hash_buf, int size, int num, unsigned char* key_buf, CryptoPrimitive* obj);
+		// thread handler structure
+		typedef struct{
+			int index;
+			KeyEx* obj;
+		}param_keyex;
 
-	/*
-	 * hash table initiation
-	 *
-	 */ 
-	void create_table();
+		// ring buffer item structure
+		typedef struct{
+			unsigned char data[CHUNK_DATA_SIZE];
+			unsigned char key[HASH_SIZE];
+			int chunkID;
+			int chunkSize;
+			int end;
+		}Chunk_t;
 
-	/*
-	 * thread handler
-	 *
-	 */ 
-	static void* thread_handler(void* param);
+		// encoder object
+		Encoder* encodeObj_;
 
-	/*
-	 * hash table hash function
-	 *
-	 */
-	static unsigned int key_hash_fcn(const entry_t*);
+		// input ring buffer
+		RingBuffer<Chunk_t>* inputbuffer_;
 
-	/*
-	 * hash table compare function
-	 *
-	 */ 
-	static bool key_cmp_fcn(const entry_t*, const entry_t*);
+		// hash table for cache keys
+		HashTable<entry_t>* hashtable_;
 
-	/*
-	 * hash table item init function
-	 *
-	 */ 
-	static void key_init_fcn(entry_t*, void*);
+		// thread id
+		pthread_t tid_;
 
-	/*
-	 * hash table item free function
-	 *
-	 */ 
-	static void key_free_fcn(entry_t*, void*);
+		char current_key[32];
 
-	/*
-	 * insert new key to key store
-	 * (called when first upload file)
-	 */ 
-	void new_file(int user, char* filepath, int pathSize);
+		// crpyto object
+		CryptoPrimitive* cryptoObj_;
 
-	/*
-	 * update existing file's state cipher
-	 * (called when update secrets)
-	 */ 
-	void update_file(int user, char* filepath, int pathSize);
+		/*
+		 * constructor of key exchange
+		 *
+		 *
+		 *
+		 */
+		KeyEx(Encoder* obj, int securetype, char* ip, char* ksip, int ksport);
+
+		/*
+		 * destructor of key exchange
+		 */
+		~KeyEx();
+
+		/*
+		 * read rsa keys from key file
+		 */
+		bool readKeyFile(char * filename);
+
+		/*
+		 * add chunk to input buffer
+		 */
+		void add(Chunk_t* item);
+
+		/*
+		 * procedure for print a big number in hex
+		 */
+		void printBN(BIGNUM *input);
+
+		/*
+		 * procedure for print a buffer content
+		 */ 
+		void printBuf(unsigned char* buff, int size);
+
+		/*
+		 * procedure for remove blind in returned keys 
+		 *
+		 * @param buff - input big number buffer
+		 * @param size - input big number size
+		 * @param index - the index of recorded random number r
+		 */ 
+		void elimination(unsigned char* buff, int size, int index);
+
+
+		/*
+		 * procedure for blind hash value
+		 *
+		 * @param hash_buf - input buffer storing hash
+		 * @param size - the size of input hash
+		 * @param ret_buf - the returned buffer holding blinded hash
+		 * @param index - the index of record random number r
+		 *
+		 */ 
+		void decoration(unsigned char* hash_buf, int size, unsigned char* ret_buf, int index);
+
+		/*
+		 * procedure for verify returned keys
+		 *
+		 * @param original - the original hash value buffer
+		 * @param buff - the buffer contains returned blinded key
+		 * @param size - the size of hash value
+		 *
+		 * @return 0 if verify pass, otherwise means verification fails
+		 *
+		 */ 
+		int verify(unsigned char* original, unsigned char* buff, int size);
+
+		/*
+		 * main procedure for init key generation with key server
+		 *
+		 * @param hash_buf - the buffer holding hash values
+		 * @param size - the size of data
+		 * @param num - the number of hashes
+		 * @param key_buf - the returned buffer contains keys
+		 * @param obj - the pointer to crypto object
+		 *
+		 */ 
+		void keyExchange(unsigned char* hash_buf, int size, int num, unsigned char* key_buf, CryptoPrimitive* obj);
+
+		/*
+		 * hash table initiation
+		 *
+		 */ 
+		void create_table();
+
+		/*
+		 * thread handler
+		 *
+		 */ 
+		static void* thread_handler(void* param);
+
+		/*
+		 * hash table hash function
+		 *
+		 */
+		static unsigned int key_hash_fcn(const entry_t*);
+
+		/*
+		 * hash table compare function
+		 *
+		 */ 
+		static bool key_cmp_fcn(const entry_t*, const entry_t*);
+
+		/*
+		 * hash table item init function
+		 *
+		 */ 
+		static void key_init_fcn(entry_t*, void*);
+
+		/*
+		 * hash table item free function
+		 *
+		 */ 
+		static void key_free_fcn(entry_t*, void*);
+
+		/*
+		 * insert new key to key store
+		 * (called when first upload file)
+		 */ 
+		void new_file(int user, char* filepath, int pathSize);
+
+		/*
+		 * update existing file's state cipher
+		 * (called when update secrets)
+		 */ 
+		void update_file(int user, char* filepath, int pathSize);
 };
 
 #endif

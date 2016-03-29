@@ -9,7 +9,6 @@
 #include "chunker.hh"
 #include "encoder.hh"
 #include "decoder.hh"
-#include "CDCodec.hh"
 #include "uploader.hh"
 #include "downloader.hh"
 #include "CryptoPrimitive.hh"
@@ -26,7 +25,6 @@ Decoder* decoderObj;
 Encoder* encoderObj;
 Uploader* uploaderObj;
 CryptoPrimitive* cryptoObj;
-CDCodec* cdCodecObj;
 Downloader* downloaderObj;
 Configuration* confObj;
 KeyEx* keyObj;
@@ -70,7 +68,7 @@ int main(int argc, char *argv[]){
 	unsigned char * buffer;
 	int *chunkEndIndexList;
 	int numOfChunks;
-	int n, m, k, r, *kShareIDList;
+	int n, *kShareIDList;
 
 	int i;
 
@@ -98,13 +96,7 @@ int main(int argc, char *argv[]){
 	 * Secret Buffer Size for each secret object: 16KB
 	 * Share Buffer Size for aggregated cipher block: numOfStore*16KB
 	 *
-	 * m, k, r are deprecate in REED
-	 *
 	 * */
-
-	m = 1; // @deprecate
-	k = n - m; // @deprecate
-	r = k - 1; // @deprecate
 
 	int bufferSize = 1024*1024*1024;
 	int chunkEndIndexListSize = 1024*1024;
@@ -121,8 +113,8 @@ int main(int argc, char *argv[]){
 	shareBuffer = (unsigned char*)malloc(sizeof(unsigned char) * shareBufferSize);
 
 	/* initialize share ID list */
-	kShareIDList = (int*)malloc(sizeof(int)*k);
-	for (i = 0; i < k; i++) kShareIDList[i] = i;
+	kShareIDList = (int*)malloc(sizeof(int)*n);
+	for (i = 0; i < n; i++) kShareIDList[i] = i;
 
 	/* full file name process */
 	int namesize = 0;
@@ -140,7 +132,7 @@ int main(int argc, char *argv[]){
 
 		/* object initialization */
 		uploaderObj = new Uploader(n,n,userID, confObj);
-		encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
+		encoderObj = new Encoder(n, securetype, uploaderObj);
 		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");
 
@@ -236,7 +228,7 @@ int main(int argc, char *argv[]){
 	/* download procedure */
 	if (strncmp(opt,"-d",2) == 0 || strncmp(opt, "-a", 2) == 0){
 		/* init objects */
-		decoderObj = new Decoder(CAONT_RS_TYPE, n, m, r, securetype, argv[1]);
+		decoderObj = new Decoder(n, securetype, argv[1]);
 		downloaderObj = new Downloader(n,n,userID,decoderObj,confObj);
 		double timer,split,bw;
 		FILE * fw = fopen("./decoded_copy","wb");
@@ -268,7 +260,7 @@ int main(int argc, char *argv[]){
 		double timer,split,bw;
 		timerStart(&timer);
 		uploaderObj = new Uploader(n,n,userID,confObj);
-		encoderObj = new Encoder(CAONT_RS_TYPE, n, m, r, securetype, uploaderObj);
+		encoderObj = new Encoder(n, securetype, uploaderObj);
 		keyObj = new KeyEx(encoderObj, securetype, confObj->getkmIP(), confObj->getksIP(), confObj->getksPort());
 		keyObj->readKeyFile("./keys/public.pem");
 

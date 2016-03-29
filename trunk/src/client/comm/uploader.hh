@@ -23,7 +23,6 @@
 
 #include "BasicRingBuffer.hh"
 #include "socket.hh"
-#include "CDCodec.hh"
 #include "CryptoPrimitive.hh"
 #include "conf.hh"
 
@@ -67,168 +66,168 @@ using namespace std;
  *
  */
 class Uploader{
-    private:
-        //prime number for compute hash
-        long prime_;
+	private:
+		//prime number for compute hash
+		long prime_;
 
-        //total number of clouds
-        int total_;
+		//total number of clouds
+		int total_;
 
-        //number of a subset of clouds
-        int subset_;
+		//number of a subset of clouds
+		int subset_;
 
-    public:
-        /* file metadata header structure */
-        typedef struct{
-            int fullNameSize; 
-            long fileSize;
-            int numOfPastSecrets;
-            long sizeOfPastSecrets;
-            int numOfComingSecrets;
-            long sizeOfComingSecrets;
-        }fileShareMDHead_t;
+	public:
+		/* file metadata header structure */
+		typedef struct{
+			int fullNameSize; 
+			long fileSize;
+			int numOfPastSecrets;
+			long sizeOfPastSecrets;
+			int numOfComingSecrets;
+			long sizeOfComingSecrets;
+		}fileShareMDHead_t;
 
-        /* share metadata header structure */
-        typedef struct {
-            unsigned char shareFP[FP_SIZE]; 
-            int secretID;
-            int secretSize;
-            int shareSize;
-        } shareMDEntry_t;
+		/* share metadata header structure */
+		typedef struct {
+			unsigned char shareFP[FP_SIZE]; 
+			int secretID;
+			int secretSize;
+			int shareSize;
+		} shareMDEntry_t;
 
-        /* file header object struct for ringbuffer */
-        typedef struct{
-            fileShareMDHead_t file_header;
-            unsigned char data[RING_BUFFER_DATA_SIZE];
-        }fileHeaderObj_t;
+		/* file header object struct for ringbuffer */
+		typedef struct{
+			fileShareMDHead_t file_header;
+			unsigned char data[RING_BUFFER_DATA_SIZE];
+		}fileHeaderObj_t;
 
-        /* share header object struct for ringbuffer */
-        typedef struct{
-            shareMDEntry_t share_header;
-            unsigned char data[RING_BUFFER_DATA_SIZE];
-        }shareHeaderObj_t;
+		/* share header object struct for ringbuffer */
+		typedef struct{
+			shareMDEntry_t share_header;
+			unsigned char data[RING_BUFFER_DATA_SIZE];
+		}shareHeaderObj_t;
 
-        /* union of objects for unifying ringbuffer objects */
-        typedef struct{
-            int type;
-            union{
-                fileHeaderObj_t fileObj;
-                shareHeaderObj_t shareObj;
-            };
-        }Item_t;
+		/* union of objects for unifying ringbuffer objects */
+		typedef struct{
+			int type;
+			union{
+				fileHeaderObj_t fileObj;
+				shareHeaderObj_t shareObj;
+			};
+		}Item_t;
 
-        /* thread parameter structure */
-        typedef struct{
-            int cloudIndex;
-            Uploader* obj;
-        }param_t;
+		/* thread parameter structure */
+		typedef struct{
+			int cloudIndex;
+			Uploader* obj;
+		}param_t;
 
-        /* file header pointer array for modifying header */
-        fileShareMDHead_t ** headerArray_;
+		/* file header pointer array for modifying header */
+		fileShareMDHead_t ** headerArray_;
 
-        /* socket array */
-        Socket** socketArray_;
+		/* socket array */
+		Socket** socketArray_;
 
-        /* metadata buffer */
-        char ** uploadMetaBuffer_;
+		/* metadata buffer */
+		char ** uploadMetaBuffer_;
 
-        /* container buffer */
-        char ** uploadContainer_;
+		/* container buffer */
+		char ** uploadContainer_;
 
-        /* container write pointer */
-        int* containerWP_;
+		/* container write pointer */
+		int* containerWP_;
 
-        /* metadata write pointer */
-        int* metaWP_;
+		/* metadata write pointer */
+		int* metaWP_;
 
-        /* indicate the number of shares in a buffer */
-        int* numOfShares_;
+		/* indicate the number of shares in a buffer */
+		int* numOfShares_;
 
-        /* array for record each share size */
-        int** shareSizeArray_;	
+		/* array for record each share size */
+		int** shareSizeArray_;	
 
-        /* size of file metadata header */
-        int fileMDHeadSize_;
+		/* size of file metadata header */
+		int fileMDHeadSize_;
 
-        /* size of share metadata header */
-        int shareMDEntrySize_;
-
-
-        /* thread id array */
-        pthread_t tid_[UPLOAD_NUM_THREADS];
-
-        /* record accumulated processed data */
-        long long accuData_[UPLOAD_NUM_THREADS];
-
-        /* record accumulated unique data */
-        long long accuUnique_[UPLOAD_NUM_THREADS];
-
-        /* uploader ringbuffer array */
-        RingBuffer<Item_t>** ringBuffer_;
+		/* size of share metadata header */
+		int shareMDEntrySize_;
 
 
-        /*
-         * constructor
-         *
-         * @param p - input large prime number
-         * @param total - input total number of clouds
-         * @param subset - input number of clouds to be chosen
-         * @param confObj - configuration object
-         */
-        Uploader(int total, int subset, int userID, Configuration* confObj);
+		/* thread id array */
+		pthread_t tid_[UPLOAD_NUM_THREADS];
 
-        /*
-         * destructor
-         */
-        ~Uploader();
+		/* record accumulated processed data */
+		long long accuData_[UPLOAD_NUM_THREADS];
+
+		/* record accumulated unique data */
+		long long accuUnique_[UPLOAD_NUM_THREADS];
+
+		/* uploader ringbuffer array */
+		RingBuffer<Item_t>** ringBuffer_;
+
+
+		/*
+		 * constructor
+		 *
+		 * @param p - input large prime number
+		 * @param total - input total number of clouds
+		 * @param subset - input number of clouds to be chosen
+		 * @param confObj - configuration object
+		 */
+		Uploader(int total, int subset, int userID, Configuration* confObj);
+
+		/*
+		 * destructor
+		 */
+		~Uploader();
 
 		int uploadStub(char* name);
 
 
-        /*
-         * Initiate upload
-         *
-         * @param cloudIndex - indicate targeting cloud
-         * 
-         */
-        int performUpload(int cloudIndex);	
+		/*
+		 * Initiate upload
+		 *
+		 * @param cloudIndex - indicate targeting cloud
+		 * 
+		 */
+		int performUpload(int cloudIndex);	
 
-        /*
-         * indicate the end of uploading a file
-         * 
-         * @return total - total amount of data that input to uploader
-         * @return uniq - the amount of unique data that transferred in network
-         *
-         */
-        int indicateEnd(long long *total, long long *uniq);
+		/*
+		 * indicate the end of uploading a file
+		 * 
+		 * @return total - total amount of data that input to uploader
+		 * @return uniq - the amount of unique data that transferred in network
+		 *
+		 */
+		int indicateEnd(long long *total, long long *uniq);
 
-        /*
-         * interface for adding object to ringbuffer
-         *
-         * @param item - the object to be added
-         * @param size - the size of the object
-         * @param index - the buffer index 
-         *
-         */
-        int add(Item_t* item, int size, int index);
+		/*
+		 * interface for adding object to ringbuffer
+		 *
+		 * @param item - the object to be added
+		 * @param size - the size of the object
+		 * @param index - the buffer index 
+		 *
+		 */
+		int add(Item_t* item, int size, int index);
 
-        /*
-         * procedure for update headers when upload finished
-         * 
-         * @param cloudIndex - indicating targeting cloud
-         *
-         *
-         *
-         */
-        int updateHeader(int cloudIndex);
+		/*
+		 * procedure for update headers when upload finished
+		 * 
+		 * @param cloudIndex - indicating targeting cloud
+		 *
+		 *
+		 *
+		 */
+		int updateHeader(int cloudIndex);
 
-        /*
-         * uploader thread handler
-         *
-         * @param param - input structure
-         *
-         */
+		/*
+		 * uploader thread handler
+		 *
+		 * @param param - input structure
+		 *
+		 */
 
-        static void* thread_handler(void* param);
+		static void* thread_handler(void* param);
 };
 #endif
