@@ -46,46 +46,46 @@
 using namespace std;
 
 class KeyServer{
-private:
+	private:
 
-	//port number
-	int hostPort_;
+		//port number
+		int hostPort_;
 
-	//server address struct
-	struct sockaddr_in myAddr_;
-	
-	//receiving socket
-	int hostSock_;
-	
-	//socket size
-	socklen_t addrSize_;
+		//server address struct
+		struct sockaddr_in myAddr_;
 
-	//client socket
-	int* clientSock_;
+		//receiving socket
+		int hostSock_;
 
-	//socket address
-	struct sockaddr_in sadr_;
-		
-	//thread ID
-	pthread_t threadId_;
+		//socket size
+		socklen_t addrSize_;
 
-	// SSL context
-	SSL_CTX* ctx_;
+		//client socket
+		int* clientSock_;
+
+		//socket address
+		struct sockaddr_in sadr_;
+
+		//thread ID
+		pthread_t threadId_;
+
+		// SSL context
+		SSL_CTX* ctx_;
 
 
-public:
-	// SSL connection structure
-	SSL* ssl_;
+	public:
+		// SSL connection structure
+		SSL* ssl_;
 
-	// constructor
-	KeyServer(int port);
+		// constructor
+		KeyServer(int port);
 
-	// destructor 
-	~KeyServer();
+		// destructor 
+		~KeyServer();
 
-	// main loop
-	void runReceive();
-//	void* SocketHandler(void* lp);
+		// main loop
+		void runReceive();
+		//	void* SocketHandler(void* lp);
 };
 
 #endif

@@ -21,7 +21,6 @@ REED is built on Ubuntu 12.04.3 LTS with g++ version 4.8.1.
 This software requires the following libraries:
 
  * OpenSSL (https://www.openssl.org/source/openssl-1.0.2a.tar.gz)
- * GF-Complete (https://github.com/ceph/gf-complete/archive/master.zip)
  * boost C++ library (http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz)
  * GMP library (https://gmplib.org/)
  * LevelDB (https://github.com/google/leveldb/archive/master.zip)

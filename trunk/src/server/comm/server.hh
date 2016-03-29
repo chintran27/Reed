@@ -40,34 +40,34 @@
 using namespace std;
 
 class Server{
-private:
+	private:
 
-	//port number
-	int hostPort_;
+		//port number
+		int hostPort_;
 
-	//server address struct
-	struct sockaddr_in myAddr_;
-	
-	//receiving socket
-	int hostSock_;
+		//server address struct
+		struct sockaddr_in myAddr_;
 
-	
-	//socket size
-	socklen_t addrSize_;
+		//receiving socket
+		int hostSock_;
 
-	//client socket
-	int* clientSock_;
 
-	//socket address
-	struct sockaddr_in sadr_;
-		
-	//thread ID
-	pthread_t threadId_;
+		//socket size
+		socklen_t addrSize_;
 
-public:
-	Server(int port, DedupCore* dedupObj);
-	void runReceive();
-//	void* SocketHandler(void* lp);
+		//client socket
+		int* clientSock_;
+
+		//socket address
+		struct sockaddr_in sadr_;
+
+		//thread ID
+		pthread_t threadId_;
+
+	public:
+		Server(int port, DedupCore* dedupObj);
+		void runReceive();
+		//	void* SocketHandler(void* lp);
 };
 
 #endif

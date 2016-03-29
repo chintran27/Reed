@@ -199,7 +199,7 @@ void* SocketHandler(void* lp){
 			char* stubbuffer = (char*)malloc(sizeof(char)*length);
 
 			FILE* wp = fopen("current.meta","w");
-		
+
 			/* get stub */
 			int total = 0;
 			while (total < length){
@@ -226,18 +226,18 @@ void* SocketHandler(void* lp){
 			fseek(rp, 0, SEEK_SET);
 
 			char* stubtemp = (char*)malloc(sizeof(char)*length);
-			
+
 			int ret;
 			ret = fread(stubtemp, 1, length, rp);
 			if (ret != length){
 				printf("error reading cipher file\n");
 			}
-			
+
 			/* send stub size back */
 			if ((bytecount = send(*clientSock, &length, sizeof(int), 0)) == -1){
 				fprintf(stderr, "Error sending data %d\n", errno);
 			}
-			
+
 			/* send stub file */
 			if ((bytecount = send(*clientSock, stubtemp, length, 0)) == -1){
 				fprintf(stderr, "Error sending data %d\n", errno);
@@ -381,7 +381,7 @@ void* SocketHandler(void* lp){
 			dedupObj_->firstStageDedup(user,(unsigned char*)metaBuffer, count, statusList, numOfShare, dataSize);
 			//split = timerSplit(&timer);
 			//first_total+= split;
-			
+
 			/* NO status list returned */
 		}
 
