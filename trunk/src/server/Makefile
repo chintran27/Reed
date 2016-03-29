@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall
+CFLAGS = -O3 -Wall
 LIBS = -lcrypto -lssl -lpthread -lsnappy 
 INCLUDES = -I./lib/leveldb-1.15.0/include -I./backend/ -I./utils/ -I./lib/cryptopp -I./comm/ -I./dedup/ 
 JERASURE_OBJS = 
